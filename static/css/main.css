@@ -1,0 +1,13 @@
+.center-div {
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto
+}
+
+.my-active {
+    background-color: darkgrey;
+}
+
+.li-bg{
+    background-color: whitesmoke;
+}
