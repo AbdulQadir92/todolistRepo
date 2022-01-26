@@ -15,6 +15,7 @@ def save_todo(request):
     data = json.loads(request.body)
     title = data['title']
     description = data['description']
+    # created_by =
     Task.objects.create(title=title, description=description)
     # task = Task(title=title, description=description)
     # task.save()
@@ -23,7 +24,8 @@ def save_todo(request):
 
 
 def all_todos(request):
-    tasks = Task.objects.filter(deleted_at=None)
+    tasks = Task.objects.filter(deleted_at=None, updated_at=None)
+    # tasks = Task.objects.all()
     tasks_list = []
     for task in tasks:
         task_dict = {
@@ -37,13 +39,14 @@ def all_todos(request):
 
 def update_todo(request):
     data = json.loads(request.body)
+
     task_id = data['id']
     task = Task.objects.get(id=task_id)
-    task.id = data['id']
-    task.title = data['title']
-    task.description = data['description']
     task.updated_at = datetime.datetime.now()
+    # task.updated_by =
     task.save()
+
+    Task.objects.create(title=data['title'], description=data['description'])
     print('Task updated successfully')
     return HttpResponse('Task updated successfully')
 
@@ -51,6 +54,10 @@ def update_todo(request):
 def delete_todo(request, task_id):
     task = Task.objects.get(id=task_id)
     task.deleted_at = datetime.datetime.now()
+    # task.deleted_by =
     task.save()
+
+    tasks_count = Task.objects.filter(updated_at=None, deleted_at=None).count()
+
     print('Task deleted successfully')
-    return HttpResponse('Task deleted successfully')
+    return JsonResponse({'successResponse': 'Task deleted successfully', 'tasks_count': tasks_count})

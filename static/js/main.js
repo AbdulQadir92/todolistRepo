@@ -5,6 +5,7 @@ function ajaxGetRequest(url) {
     httpRequest.onload = function () {
         let data = JSON.parse(this.response);
         todoList.createElement(data);
+        // console.log(data);
     };
     httpRequest.open('GET', url);
     httpRequest.send();
@@ -43,16 +44,17 @@ function ajaxPostRequest(url, data){
     httpReqeust.send(JSON.stringify(data));
 }
 
-// Ajax request to delete a task
-function ajaxDeleteRequest(url, id){
-    let httpRequest = new XMLHttpRequest();
-    httpRequest.onload = function () {
-        console.log(this.response);
-    };
-    httpRequest.open('DELETE', url + "/" + id);
-    httpRequest.setRequestHeader('X-CSRFToken', csrftoken)
-    httpRequest.send();
-}
+// // Ajax request to delete a task
+// function ajaxDeleteRequest(url, id){
+//     let httpRequest = new XMLHttpRequest();
+//     httpRequest.onload = function () {
+//         console.log(this.response);
+//         return [];
+//     };
+//     httpRequest.open('DELETE', url + "/" + id);
+//     httpRequest.setRequestHeader('X-CSRFToken', csrftoken)
+//     httpRequest.send();
+// }
 
 
 // function to create li that is appended to ul
@@ -60,6 +62,11 @@ const todoList = {
  createElement: function(tasks){
     let tasksList = document.querySelector('#tasksList');
     tasksList.innerHTML = '';
+
+    if(tasks.length === 0){
+            let tasksList = document.querySelector('#tasksList');
+            tasksList.innerHTML = 'No tasks to show';
+    }
 
     tasks.sort();
     tasks.reverse();
@@ -193,8 +200,24 @@ const todoList = {
 // function to delete task
   deleteTask: function(_this){
     let taskId = _this.parentElement.id;
+
+    let httpRequest = new XMLHttpRequest();
+    httpRequest.onload = function () {
+        let data = JSON.parse(this.response);
+        console.log(data);
+        console.log(this.response);
+
+        if(data.tasks_count === 0){
+            let tasksList = document.querySelector('#tasksList');
+            tasksList.innerHTML = 'No tasks to show';
+        }
+    };
+    httpRequest.open('DELETE', "delete_todo" + "/" + taskId);
+    httpRequest.setRequestHeader('X-CSRFToken', csrftoken);
+    httpRequest.send();
+
     _this.parentElement.remove();
-    ajaxDeleteRequest('delete_todo', taskId);
+    // ajaxDeleteRequest('delete_todo', taskId);
     todoList.cancelUpdate();
   },
   taskHover: function(_this){
