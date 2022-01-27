@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.shortcuts import render
 from django.http import JsonResponse, HttpResponse
 from .models import *
@@ -6,6 +7,12 @@ import datetime
 
 
 # Create your views here.
+def register(request):
+    # user = User.objects.create_user()
+    # print('user created')
+    return render(request, 'todolistapp/register.html')
+
+
 def home(request):
     context = {}
     return render(request, 'todolistapp/index.html', context)
@@ -31,7 +38,8 @@ def all_todos(request):
         task_dict = {
             'id': task.id,
             'title': task.title,
-            'description': task.description
+            'description': task.description,
+            'complete': task.complete
         }
         tasks_list.append(task_dict)
     return JsonResponse(tasks_list, safe=False)
@@ -46,18 +54,20 @@ def update_todo(request):
     # task.updated_by =
     task.save()
 
-    Task.objects.create(title=data['title'], description=data['description'])
+    Task.objects.create(title=data['title'], description=data['description'], complete=data['complete'])
     print('Task updated successfully')
     return HttpResponse('Task updated successfully')
 
 
 def delete_todo(request, task_id):
-    task = Task.objects.get(id=task_id)
-    task.deleted_at = datetime.datetime.now()
-    # task.deleted_by =
-    task.save()
+    try:
+        task = Task.objects.get(id=task_id)
+        task.deleted_at = datetime.datetime.now()
+        # task.deleted_by =
+        task.save()
+    except:
+        print('No task with this id exists')
 
     tasks_count = Task.objects.filter(updated_at=None, deleted_at=None).count()
-
     print('Task deleted successfully')
     return JsonResponse({'successResponse': 'Task deleted successfully', 'tasks_count': tasks_count})

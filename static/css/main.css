@@ -1,7 +1,5 @@
-.center-div {
-    width: 50%;
-    margin-left: auto;
-    margin-right: auto
+body {
+    background-color: whitesmoke;
 }
 
 .my-active {
@@ -11,3 +9,12 @@
 .li-bg{
     background-color: whitesmoke;
 }
+
+.top-margin {
+    margin-top: 12px;
+}
+
+.left-margin {
+    margin-left: 2px;
+}
+
