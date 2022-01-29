@@ -13,10 +13,10 @@
 {% include 'todolistapp/navbar.html' %}
 
 <div id="urlHolder"
-     data-getUrl="{% url 'all_todos' %}"
-     data-saveUrl="{% url 'save_todo' %}"
-     data-updateUrl="{% url 'update_todo' %}"
-     data-deleteUrl="{% url 'delete_todo' 0 %}"
+{#     data-getUrl="{% url 'all_todos' %}"#}
+{#     data-saveUrl="{% url 'save_todo' %}"#}
+{#     data-updateUrl="{% url 'update_todo' %}"#}
+{#     data-deleteUrl="{% url 'delete_todo' 0 %}"#}
      data-path="{{ request.path }}"
 ></div>
 
@@ -37,8 +37,10 @@
 
 {% if request.path == '/' %}
     <script src="{% static 'js/index.js' %}"></script>
-{% elif request.path == '/register/' %}
+{% elif request.path == '/accounts/register/' %}
     <script src="{% static 'js/register.js' %}"></script>
+{% elif request.path == '/accounts/login/' %}
+    <script src="{% static 'js/login.js' %}"></script>
 {% endif %}
 
 {#<script src="{% static 'js/index.js' %}"></script>#}

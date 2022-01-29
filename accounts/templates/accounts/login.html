@@ -1,0 +1,33 @@
+{% extends 'todolistapp/main.html' %}
+
+{% block content %}
+
+    <div class="row">
+        <div class="col-lg-1" id="loginUrlHolder"
+            data-loginUrl="{% url 'login' %}"
+        ></div>
+
+        <div class="col-lg-10">
+            <div class="card shadow p-3 mb-5 bg-white rounded">
+                <form action="" method="" class="p-4" id="loginForm">
+                    {% csrf_token %}
+                    <div class="form-group row">
+                        <label for="loginUsername" class="col-md-2 mb-md-0 px-0 align-self-center text-md-left">Username</label>
+                        <input type="text" class="form-control col-md-10" id="loginUsername" name="username" placeholder="Enter your username" required>
+                        <div class="col-md-2"></div>
+                        <div id="usernameMsg" class="form-text px-0 text-muted col-md-10"></div>
+{#                        <small id="usernameHelp" class="form-text px-0 text-muted col-md-10">We'll never share your username with anyone else.</small>#}
+                    </div>
+                    <div class="form-group row">
+                        <label for="loginPassword" class="col-md-2 mb-md-0 px-0 align-self-center text-md-left">Password</label>
+                        <input type="password" class="form-control col-md-10" id="loginPassword" name="password" placeholder="Enter your password" required>
+                        <div class="col-md-2"></div>
+                        <div id="passwordMsg" class="form-text px-0 text-muted col-md-10"></div>
+                    </div>
+                    <input type="submit" class="btn btn-primary float-right" value="Login" id="loginBtn">
+                </form>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

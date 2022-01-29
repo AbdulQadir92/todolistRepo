@@ -1,6 +1,6 @@
-const getUrl = urlHolder.getAttribute('data-getUrl');
+// const getUrl = urlHolder.getAttribute('data-getUrl');
 
-ajaxGetRequest(getUrl);
+ajaxGetRequest('all_todos/');
 
 // function to create li that is appended to ul
 const todoList = {

@@ -1,4 +1,3 @@
-from django.contrib.auth.models import User
 from django.shortcuts import render
 from django.http import JsonResponse, HttpResponse
 from .models import *
@@ -7,11 +6,6 @@ import datetime
 
 
 # Create your views here.
-def register(request):
-    # user = User.objects.create_user()
-    # print('user created')
-    return render(request, 'todolistapp/register.html')
-
 
 def home(request):
     context = {}
@@ -20,10 +14,11 @@ def home(request):
 
 def save_todo(request):
     data = json.loads(request.body)
+    user = request.user
     title = data['title']
     description = data['description']
-    # created_by =
-    Task.objects.create(title=title, description=description)
+    created_by = request.user.id
+    Task.objects.create(user=user, title=title, description=description, created_by=created_by)
     # task = Task(title=title, description=description)
     # task.save()
     print('Task saved successfully')
@@ -31,7 +26,9 @@ def save_todo(request):
 
 
 def all_todos(request):
-    tasks = Task.objects.filter(deleted_at=None, updated_at=None)
+    print(request.user)
+    user = request.user
+    tasks = Task.objects.filter(deleted_at=None, updated_at=None, user=user)
     # tasks = Task.objects.all()
     tasks_list = []
     for task in tasks:
@@ -48,26 +45,32 @@ def all_todos(request):
 def update_todo(request):
     data = json.loads(request.body)
 
+    user = request.user
     task_id = data['id']
     task = Task.objects.get(id=task_id)
     task.updated_at = datetime.datetime.now()
-    # task.updated_by =
+    task.updated_by = user.id
     task.save()
 
-    Task.objects.create(title=data['title'], description=data['description'], complete=data['complete'])
+    Task.objects.create(user=user, title=data['title'], description=data['description'], complete=data['complete'])
     print('Task updated successfully')
     return HttpResponse('Task updated successfully')
 
 
 def delete_todo(request, task_id):
+    user = request.user
     try:
         task = Task.objects.get(id=task_id)
         task.deleted_at = datetime.datetime.now()
-        # task.deleted_by =
+        task.deleted_by = user.id
         task.save()
+
     except:
         print('No task with this id exists')
 
-    tasks_count = Task.objects.filter(updated_at=None, deleted_at=None).count()
+    tasks_count = Task.objects.filter(user=user, updated_at=None, deleted_at=None).count()
     print('Task deleted successfully')
     return JsonResponse({'successResponse': 'Task deleted successfully', 'tasks_count': tasks_count})
+
+
+

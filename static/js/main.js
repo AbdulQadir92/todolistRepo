@@ -40,7 +40,17 @@ function ajaxPostRequest(url, data){
     let httpReqeust = new XMLHttpRequest();
     httpReqeust.onload = function () {
         console.log(this.response);
-        ajaxGetRequest('all_todos/');
+        if(path === '/'){
+            ajaxGetRequest('all_todos/');
+        }
+        if(path === '/accounts/login/'){
+            let msg = this.response;
+            if(msg.includes('logged in')){
+                console.log('logged in');
+                window.location.href = '/'
+            }
+            createMessage(msg);
+        }
     };
     httpReqeust.open('POST', url);
     httpReqeust.setRequestHeader('Content-type', 'application/json');
