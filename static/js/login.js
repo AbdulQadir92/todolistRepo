@@ -16,20 +16,20 @@ loginForm.addEventListener('submit', function (e) {
 
 
 
-function createMessage(msg){
-    if(msg.includes('logged in')){
-        loginForm.reset();
-    } else{
-        let parent = document.querySelector('#passwordMsg');
-        let small = document.createElement('div');
-        let message = document.createTextNode(msg);
-        small.appendChild(message);
-        parent.appendChild(small);
-
-        setTimeout(function () {
-           document.querySelector('#passwordMsg').innerHTML = '';
-        }, 3000);
-    }
-}
+// function createMessage(msg, msgHolder){
+//     if(msg.includes('Username already taken')){
+//         msgHolder = 'usernameMsgHolder';
+//     } else{
+//         let parent = document.querySelector(msgHolder);
+//         let small = document.createElement('div');
+//         let message = document.createTextNode(msg);
+//         small.appendChild(message);
+//         parent.appendChild(small);
+//
+//         setTimeout(function () {
+//            document.querySelector('#passwordMsg').innerHTML = '';
+//         }, 3000);
+//     }
+// }
 
 

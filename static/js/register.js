@@ -20,7 +20,6 @@ document.querySelector('#registerForm').addEventListener('submit', function (e) 
         password2: password2
     };
     ajaxPostRequest('', user);
-    document.querySelector('#registerForm').reset();
-
+    // document.querySelector('#registerForm').reset();
 });
 
