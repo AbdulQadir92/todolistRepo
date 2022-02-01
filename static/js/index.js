@@ -366,18 +366,18 @@ datetimeToString: function(task, li) {
       } catch (e) {
           console.log(e);
           document.querySelector('#saveBtn').remove();
+      } finally {
+          todoList.createBtn(
+      'Add',
+            'saveBtn',
+      'btn btn-primary',
+      '#saveBtnHolder',
+        // 'todoList.addTask()'
+              ''
+          );
+          document.querySelector('#checkboxHolder').style.display = 'none';
+          taskForm.reset();
       }
-      todoList.createBtn(
-  'Add',
-        'saveBtn',
-  'btn btn-primary',
-  '#saveBtnHolder',
-    // 'todoList.addTask()'
-          ''
-      );
-
-      document.querySelector('#checkboxHolder').style.display = 'none';
-      taskForm.reset();
   },
 // function to delete task
   deleteTask: function(_this){
@@ -390,7 +390,6 @@ datetimeToString: function(task, li) {
         if(!data.msg){
             _this.parentElement.remove();
         }
-
         if(data.tasks_count === 0){
             let tasksList = document.querySelector('#tasksList');
             tasksList.innerHTML = 'No tasks to show';
