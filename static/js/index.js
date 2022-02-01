@@ -60,13 +60,13 @@ const todoList = {
 datetimeToString: function(task, li) {
     let div = document.createElement('div');
     if(task.task_time){
-        console.log(task.task_time);
+        // console.log(task.task_time);
 
         let tempTime = task.task_time;
         let hoursAndMinutes = tempTime.slice(0, tempTime.lastIndexOf(':'));
         let amOrpm = tempTime.slice(tempTime.length-2);
         let time = hoursAndMinutes +' '+ amOrpm;
-        console.log(time);
+        // console.log(time);
 
         let taskTime = document.createElement('div');
         let taskTimeText = document.createTextNode(time);
@@ -93,7 +93,7 @@ datetimeToString: function(task, li) {
           let date = day + '-' + month + '-' + year;
 
         let taskDate = document.createElement('div');
-        let taskDateText = document.createTextNode(date);
+        let taskDateText = document.createTextNode(task.task_date);
         taskDate.className = 'float-right mr-3';
         taskDate.appendChild(taskDateText);
         taskDate.setAttribute('onclick', 'todoList.taskOnClick(this)');
@@ -194,24 +194,23 @@ datetimeToString: function(task, li) {
         }
 
         if(_this.parentElement.children[4].children[1].innerText !== ''){
-            console.log(_this.parentElement.children[4].children[1].innerText);
+            // console.log(_this.parentElement.children[4].children[1].innerText);
             let str = _this.parentElement.children[4].children[1].innerText;
-            let tempMonth = (_this.parentElement.children[4].children[1].innerText).slice(str.indexOf('-') + 1, str.lastIndexOf('-'));
+            let tempMonth = str.slice(0, str.indexOf('/'));
             let month;
             if(tempMonth.length === 1){
                 month = '0' + tempMonth;
             } else {
                 month = tempMonth
             }
-            let tempDay = (_this.parentElement.children[4].children[1].innerText).slice(0, str.indexOf('-'));
+            let tempDay = str.slice(str.indexOf('/') + 1, str.lastIndexOf('/'));
             let day;
             if(tempDay.length === 1){
                 day = '0' + tempDay;
             }else{
                 day = tempDay;
             }
-
-            let year = (_this.parentElement.children[4].children[1].innerText).substr(str.lastIndexOf('-') + 1, 4);
+            let year = str.substr(str.lastIndexOf('/') + 1, 4);
             let date = year + "-" + month + "-" + day;
             console.log(date);
 
@@ -310,24 +309,27 @@ datetimeToString: function(task, li) {
     // let task_time = document.querySelector('#taskTime').value;
     let task_date = _this.parentElement.children[4].children[1].innerText;
     let task_time = _this.parentElement.children[4].children[0].innerText;
-    // console.log(task_date +" "+ task_time);
+    console.log(task_date +" "+ task_time);
 
     let date;
     if(task_date !== ''){
 
         let tempDate = task_date;
         console.log(tempDate);
-        let month = tempDate.slice(tempDate.indexOf('-')+1, tempDate.lastIndexOf('-'));
+        let month = tempDate.slice(0, tempDate.indexOf('/'));
         console.log(month);
-        if(month.length === 2 && month[0] === '0'){
-            month = tempDate.slice(tempDate.indexOf('-')+2, tempDate.lastIndexOf('-'));
+        if(month.length === 1){
+            month = '0' + month;
             console.log(month);
         }
-        let day = tempDate.substr(0, 2);
-        console.log(day);
-        let year = tempDate.slice(tempDate.lastIndexOf('-')+1);
+        let day = tempDate.slice(tempDate.indexOf('/')+1, tempDate.lastIndexOf('/'));
+        if(day.length === 1){
+            day = '0' + day;
+            console.log(day);
+        }
+        let year = tempDate.substr(tempDate.lastIndexOf('/'), 5);
         console.log(year);
-        let newDate = month + '-' + day + '-' + year;
+        let newDate = year + '-' + month + '-' + day;
         console.log(newDate);
 
         date = new Date(newDate +" "+ task_time);
