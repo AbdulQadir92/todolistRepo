@@ -1,0 +1,20 @@
+body {
+    background-color: whitesmoke;
+}
+
+.my-active {
+    background-color: darkgrey;
+}
+
+.li-bg{
+    background-color: whitesmoke;
+}
+
+.top-margin {
+    margin-top: 12px;
+}
+
+.left-margin {
+    margin-left: 2px;
+}
+
