@@ -12,22 +12,22 @@
                 <div class="text-center">
                     <h2 class="mb-0">Login</h2>
                 </div>
-                <form action="" method="" class="p-4" id="loginForm">
+                <form action="" method="" class="py-4 pl-4 pr-0" id="loginForm">
                     {% csrf_token %}
-                    <div class="form-group row">
+                    <div class="form-group row pr-4">
                         <label for="loginUsername" class="col-md-2 mb-md-0 px-0 align-self-center text-md-left">Username</label>
                         <input type="text" class="form-control col-md-10" id="loginUsername" name="username" placeholder="Enter your username" required>
                         <div class="col-md-2"></div>
                         <div id="usernameMsg" class="form-text px-0 text-muted col-md-10"></div>
 {#                        <small id="usernameHelp" class="form-text px-0 text-muted col-md-10">We'll never share your username with anyone else.</small>#}
                     </div>
-                    <div class="form-group row">
+                    <div class="form-group row pr-4">
                         <label for="loginPassword" class="col-md-2 mb-md-0 px-0 align-self-center text-md-left">Password</label>
                         <input type="password" class="form-control col-md-10" id="loginPassword" name="password" placeholder="Enter your password" required>
                         <div class="col-md-2"></div>
                         <div id="passwordMsg" class="form-text px-0 text-muted col-md-10"></div>
                     </div>
-                    <input type="submit" class="btn btn-primary float-right" value="Login" id="loginBtn">
+                    <input type="submit" class="btn btn-primary float-right mr-2" value="Login" id="loginBtn">
                 </form>
             </div>
         </div>
