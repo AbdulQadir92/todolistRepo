@@ -1,6 +1,8 @@
 // const getUrl = urlHolder.getAttribute('data-getUrl');
 
+// ajax request to all tasks
 ajaxGetRequest('all_todos/');
+
 
 // function to create li that is appended to ul
 const todoList = {
@@ -18,35 +20,35 @@ const todoList = {
     tasks.reverse();
     for(let task of tasks){
 
-    // li tag //
+    // li tag
     let li = document.createElement('li');
     li.id = task.id;
     li.className = 'list-group-item task-bg';
-    li.setAttribute('onmouseover', 'todoList.taskHover(this)');
+    li.setAttribute('onmouseover', 'todoList.addHover(this)');
     li.setAttribute('onmouseleave', 'todoList.removeHover(this)');
 
-    // delete button //
+    // delete button
     let deleteBtn = document.createElement('i');
     deleteBtn.className = 'fas fa-times float-right top-margin';
     deleteBtn.setAttribute('onclick', 'todoList.deleteTask(this)');
 
-    // checkbox //
+    // checkbox
     let checkBox = document.createElement('input');
     checkBox.setAttribute('type', 'checkbox');
     if(task.complete){
-    checkBox.setAttribute('checked', 'checked');
+        checkBox.setAttribute('checked', 'checked');
     }
     checkBox.setAttribute('onchange', 'todoList.handleCheck(this)');
     checkBox.className = 'float-left top-margin';
 
-    // task title //
+    // task title div
     let taskTitle = document.createElement('h4');
     taskTitle.className = 'ml-4';
     let taskTitleText = document.createTextNode(task.title);
     taskTitle.appendChild(taskTitleText);
     taskTitle.setAttribute('onclick', 'todoList.taskOnClick(this)');
 
-    // task description
+    // task description div
     let taskDescription = document.createElement('div');
     let taskDescriptionText = document.createTextNode(task.description);
     taskDescription.appendChild(taskDescriptionText);
@@ -66,6 +68,7 @@ const todoList = {
     }
 },
 
+
 // function to create date or time element
 dateOrTimeDiv: function(taskDateOrTime = '', divClass, div, li) {
     let taskDate = document.createElement('div');
@@ -77,6 +80,7 @@ dateOrTimeDiv: function(taskDateOrTime = '', divClass, div, li) {
     div.appendChild(taskDate);
     li.appendChild(div);
 },
+
 
  // function to add a new task
 addTask: function(){
@@ -98,6 +102,7 @@ let taskForm = document.querySelector('#taskForm');
     });
 },
 
+
 // function to format task date to local date
 formatTaskDate: function(task_date) {
     let day = task_date.slice(task_date.lastIndexOf('-')+1);
@@ -112,6 +117,7 @@ formatTaskDate: function(task_date) {
     task_date = day + '-' + month + '-' + year;
     return task_date;
 },
+
 
 // function to format task time to local time
 formatTaskTime: function(task_time){
@@ -133,6 +139,7 @@ formatTaskTime: function(task_time){
     task_time = hour + ':' + minutes;
     return task_time;
 },
+
 
 // function to create button
 colDiv: document.createElement('div'),
@@ -156,37 +163,49 @@ taskOnClick: function (_this) {
     document.querySelector('#taskId').value = _this.parentElement.id;
     document.querySelector('#taskTitle').value = _this.parentElement.children[2].innerText;
     document.querySelector('#taskDescription').value = _this.parentElement.children[3].innerText;
-    if(_this.parentElement.children[4].children[0].innerText !== ''){
-        let tempTime = _this.parentElement.children[4].children[0].innerText;
-        let hour = tempTime.slice(0, tempTime.indexOf(':'));
-        let minutes = tempTime.substr(tempTime.indexOf(':') + 1, 2);
-
-        if(tempTime.includes('PM')){
-            hour = Number(hour);
-            if(hour === 12){
-                hour = 12;
-            } else{
-                hour += 12;
-            }
-        }else if(tempTime.includes('AM') && Number(hour) === 12){
-            hour = Number(hour);
-            hour = '00';
-        }
-
-        document.querySelector('#taskTime').value = hour +':'+ minutes;
+    let taskDate = _this.parentElement.children[4].children[1].innerText;
+    let taskTime = _this.parentElement.children[4].children[0].innerText;
+    if(taskDate !== ''){
+        todoList.changeDateFormat(taskDate);
     }
-    if(_this.parentElement.children[4].children[1].innerText !== ''){
-        let dateStr = _this.parentElement.children[4].children[1].innerText;
-
-        let year = dateStr.slice(dateStr.lastIndexOf('-')+1);
-        let month = dateStr.slice(dateStr.indexOf('-')+1, dateStr.lastIndexOf('-'));
-        let day = dateStr.slice(0, dateStr.indexOf('-'));
-
-        let date = year + "-" + month + "-" + day;
-
-        document.querySelector('#taskDate').value = date;
+    if(taskTime  !== ''){
+        todoList.changeTimeFormat(taskTime)
     }
     document.querySelector('#formCheckbox').checked = _this.parentElement.children[0].checked;
+    todoList.toggleTaskOnClickButtons(taskForm);
+},
+
+
+// function to change date format for date input when task li is clicked
+changeDateFormat: function(taskDate){
+    let year = taskDate.slice(taskDate.lastIndexOf('-')+1);
+    let month = taskDate.slice(taskDate.indexOf('-')+1, taskDate.lastIndexOf('-'));
+    let day = taskDate.slice(0, taskDate.indexOf('-'));
+    document.querySelector('#taskDate').value = year + "-" + month + "-" + day;
+},
+
+
+// function to change date format for date input when task li is clicked
+changeTimeFormat: function(taskTime){
+    let hour = taskTime.slice(0, taskTime.indexOf(':'));
+    let minutes = taskTime.substr(taskTime.indexOf(':') + 1, 2);
+    if(taskTime.includes('PM')){
+        hour = Number(hour);
+        if(hour === 12){
+            hour = 12;
+        } else{
+            hour += 12;
+        }
+    }else if(taskTime.includes('AM') && Number(hour) === 12){
+        hour = Number(hour);
+        hour = '00';
+    }
+    document.querySelector('#taskTime').value = hour +':'+ minutes;
+},
+
+
+// function to remove add button and create cancel and edit button, and to scroll smoothly to form for taskOnClick function
+toggleTaskOnClickButtons: function(taskForm){
     try{
         document.querySelector('#saveBtn').remove();
     } catch(err){
@@ -213,8 +232,9 @@ taskOnClick: function (_this) {
     }
 },
 
+
 // function to update task
-updateTask: function () {
+updateTask: function (){
     let taskForm = document.querySelector('#taskForm');
     let task_id = document.querySelector('#taskId').value;
     let title = document.querySelector('#taskTitle').value;
@@ -222,40 +242,12 @@ updateTask: function () {
     let checkBoxValue = document.querySelector('#formCheckbox').checked;
     let task_date = document.querySelector('#taskDate').value;
     let task_time = document.querySelector('#taskTime').value;
-
     if(task_date){
-        // let day = task_date.slice(task_date.lastIndexOf('-')+1);
-        // if(day.length === 1){
-        //     day = '0' + day;
-        // }
-        // let month = task_date.slice(task_date.indexOf('-')+1, task_date.lastIndexOf('-'));
-        // if(month.length === 1){
-        //     month = '0' + month;
-        // }
-        // let year = task_date.slice(0, task_date.indexOf('-'));
-        // task_date = day + '-' + month + '-' + year;
         task_date = todoList.formatTaskDate(task_date);
     }
     if(task_time){
-        // let hour = task_time.slice(0, task_time.indexOf(':'));
-        // let minutes = task_time.slice(task_time.indexOf(':')+1);
-        // if(hour > '12'){
-        //     hour = Number(hour);
-        //     hour -= 12;
-        //     hour = '0' + hour.toString();
-        //     minutes += ' PM';
-        // } else if(hour === '12'){
-        //     minutes += ' PM';
-        // } else if(hour === '00'){
-        //     hour = '12';
-        //     minutes += ' AM';
-        // } else {
-        //     minutes += ' AM';
-        // }
-        // task_time = hour + ':' + minutes;
         task_time = todoList.formatTaskTime(task_time);
     }
-
     let task = {
         id: task_id,
         title: title,
@@ -265,11 +257,12 @@ updateTask: function () {
         task_time: task_time
     };
     ajaxPostRequest('update_todo/', task);
-    todoList.toggleButtons(taskForm);
+    todoList.toggleUpdateButtons(taskForm);
 },
 
-// function to remove cancel and edit buttons and create add button
-toggleButtons: function(taskForm) {
+
+// function to remove cancel and edit buttons and create add button for updateTask function
+toggleUpdateButtons: function(taskForm) {
     document.querySelector('#editBtn').remove();
     document.querySelector('#cancelBtn').remove();
     try{
@@ -288,6 +281,8 @@ toggleButtons: function(taskForm) {
     taskForm.reset();
 },
 
+
+// function to update complete status when checkbox is clicked
 handleCheck: function (_this) {
     let task_id = _this.parentElement.id;
     let title = _this.parentElement.children[2].innerText;
@@ -305,6 +300,7 @@ handleCheck: function (_this) {
     };
     ajaxPostRequest('update_todo/', task);
 },
+
 
 // function to reset form and, remove cancel and edit buttons when cancel button is clicked
 cancelUpdate: function () {
@@ -326,10 +322,11 @@ cancelUpdate: function () {
         taskForm.reset();
     }
 },
+
+
 // function to delete task
 deleteTask: function(_this){
     let taskId = _this.parentElement.id;
-
     let httpRequest = new XMLHttpRequest();
     httpRequest.onload = function () {
         let data = JSON.parse(this.response);
@@ -347,13 +344,18 @@ deleteTask: function(_this){
     httpRequest.setRequestHeader('X-CSRFToken', csrftoken);
     httpRequest.send();
 },
-taskHover: function(_this){
+
+
+addHover: function(_this){
     _this.classList.add('active');
 },
+
+
 removeHover: function(_this){
     _this.classList.remove('active');
 }
 };
+
 
 // function called to bind submit event with form when page loads for first time
 todoList.addTask();

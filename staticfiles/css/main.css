@@ -2,12 +2,8 @@ body {
     background-color: #EFEFEF;
 }
 
-task-bg {
+.task-bg {
     background-color: #EFEFEF;
-}
-
-.my-active {
-    background-color: darkgrey;
 }
 
 .top-margin {
