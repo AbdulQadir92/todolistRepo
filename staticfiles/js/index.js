@@ -379,12 +379,14 @@ deleteTask: function(_this){
 
 
 addHover: function(_this){
-    _this.classList.add('active');
+    _this.classList.add('bg-dark');
+    _this.classList.add('text-white');
 },
 
 
 removeHover: function(_this){
-    _this.classList.remove('active');
+    _this.classList.remove('bg-dark');
+    _this.classList.remove('text-white');
 }
 };
 
