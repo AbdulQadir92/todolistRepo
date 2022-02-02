@@ -14,34 +14,34 @@
                 <form action="" method="" class="pt-4 pb-2 pl-4 pr-0" id="registerForm">
                     {% csrf_token %}
                     <div class="form-group row pr-4">
-                        <label for="firstName" class="col-md-2 mb-md-0 px-0 align-self-center text-md-left">First Name</label>
-                        <input type="text" class="form-control col-md-10" id="firstName" placeholder="Enter your first name" required>
+                        <label for="firstName" class="col-md-2 mb-md-0 px-0 align-self-center text-md-center">First Name</label>
+                        <input type="text" class="form-control form-control-sm col-md-10" id="firstName" placeholder="Enter your first name" required>
                     </div>
                     <div class="form-group row pr-4">
-                        <label for="lastName" class="col-md-2 mb-md-0 px-0 align-self-center text-md-left">Last Name</label>
-                        <input type="text" class="form-control col-md-10" id="lastName" placeholder="Enter your last name" required>
+                        <label for="lastName" class="col-md-2 mb-md-0 px-0 align-self-center text-md-center">Last Name</label>
+                        <input type="text" class="form-control form-control-sm col-md-10" id="lastName" placeholder="Enter your last name" required>
                     </div>
                     <div class="form-group row pr-4">
-                        <label for="email" class="col-md-2 mb-md-0 px-0 align-self-center text-md-left">Email</label>
-                        <input type="email" class="form-control col-md-10" id="email" placeholder="Enter your email address" required>
+                        <label for="email" class="col-md-2 mb-md-0 px-0 align-self-center text-md-center">Email</label>
+                        <input type="email" class="form-control form-control-sm col-md-10" id="email" placeholder="Enter your email address" required>
                     </div>
                     <div class="form-group row pr-4">
-                        <label for="username" class="col-md-2 mb-md-0 px-0 align-self-center text-md-left">Username</label>
-                        <input type="text" class="form-control col-md-10" id="username" placeholder="Enter username" required>
+                        <label for="username" class="col-md-2 mb-md-0 px-0 align-self-center text-md-center">Username</label>
+                        <input type="text" class="form-control form-control-sm col-md-10" id="username" placeholder="Enter username" required>
                         <div class="col-md-2"></div>
                         <div id="usernameMsgHolder" class="form-text px-0 text-muted col-md-10"></div>
                     </div>
                     <div class="form-group row pr-4">
-                        <label for="password1" class="col-md-2 mb-md-0 px-0 align-self-center text-md-left">Password</label>
-                        <input type="password" class="form-control col-md-10" id="password1" placeholder="Enter password" required>
+                        <label for="password1" class="col-md-2 mb-md-0 px-0 align-self-center text-md-center">Password</label>
+                        <input type="password" class="form-control form-control-sm col-md-10" id="password1" placeholder="Enter password" required>
                     </div>
                     <div class="form-group row pr-4">
-                        <label for="password2" class="col-md-2 mb-md-0 px-0 align-self-center text-md-left">Confirm password</label>
-                        <input type="password" class="form-control col-md-10" id="password2" placeholder="Confirm password" required>
+                        <label for="password2" class="col-md-2 mb-md-0 px-0 align-self-center text-md-center" style="line-height: 15px">Confirm password</label>
+                        <input type="password" class="form-control form-control-sm col-md-10" id="password2" placeholder="Confirm password" required>
                         <div class="col-md-2"></div>
                         <div id="passwordMsgHolder" class="form-text px-0 text-muted col-md-10"></div>
                     </div>
-                          <div><input type="submit" class="btn btn-primary float-right mr-2" value="Register" id="registerBtn"></div>
+                          <div><input type="submit" class="btn btn-primary btn-sm float-right mr-2" value="Register" id="registerBtn"></div>
                 </form>
             </div>
             <div class="text-center">

@@ -6,7 +6,6 @@ function ajaxGetRequest(url) {
     let httpRequest = new XMLHttpRequest();
     httpRequest.onload = function () {
         let data = JSON.parse(this.response);
-        // console.log(path);
         if(path === '/'){
             todoList.createElement(data);
             // console.log(data);
@@ -89,10 +88,9 @@ function createMessage(msg, msgHolder){
 function search(_this){
     let list = document.querySelectorAll('#tasksList li');
     let value = _this.value.toLowerCase();
-    console.log(list);
+
     for(let i = 0; i < list.length; i++){
         let text = list[i].textContent.toLowerCase();
-        console.log(text);
         if(text.indexOf(value) !== -1){
             list[i].style.display = '';
         } else {

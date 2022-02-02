@@ -1,13 +1,13 @@
 body {
-    background-color: whitesmoke;
+    background-color: #EFEFEF;
+}
+
+.task-bg {
+    background-color: #EFEFEF;
 }
 
 .my-active {
     background-color: darkgrey;
-}
-
-.li-bg{
-    background-color: whitesmoke;
 }
 
 .top-margin {
@@ -16,5 +16,9 @@ body {
 
 .left-margin {
     margin-left: 2px;
+}
+
+label {
+    font-size: 15px;
 }
 
