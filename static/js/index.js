@@ -21,64 +21,94 @@ const todoList = {
     for(let task of tasks){
 
     // li tag
-    let li = document.createElement('li');
-    li.id = task.id;
-    li.className = 'list-group-item task-bg';
-    li.setAttribute('onmouseover', 'todoList.addHover(this)');
-    li.setAttribute('onmouseleave', 'todoList.removeHover(this)');
+    let li = todoList.createLi(task);
 
-    // delete button
-    let deleteBtn = document.createElement('i');
-    deleteBtn.className = 'fas fa-times float-right top-margin';
-    deleteBtn.setAttribute('onclick', 'todoList.deleteTask(this)');
+    // div with class of d-flex to hold checkbox, title, edit button and delete button
+    let flexDiv = todoList.createSingleElement('div', 'd-flex flex-row align-items-baseline', '');
 
     // checkbox
-    let checkBox = document.createElement('input');
-    checkBox.setAttribute('type', 'checkbox');
-    if(task.complete){
-        checkBox.setAttribute('checked', 'checked');
-    }
-    checkBox.setAttribute('onchange', 'todoList.handleCheck(this)');
-    checkBox.className = 'float-left mt-3';
+    flexDiv.appendChild(todoList.createCheckbox(task));
 
     // task title div
-    let taskTitle = document.createElement('h4');
-    taskTitle.className = 'ml-4 mt-1';
-    let taskTitleText = document.createTextNode(task.title);
-    taskTitle.appendChild(taskTitleText);
-    taskTitle.setAttribute('onclick', 'todoList.taskOnClick(this)');
+    flexDiv.appendChild(todoList.createSingleElement('H4', 'px-2 mr-auto', task.title));
+
+    // edit button
+    flexDiv.appendChild(todoList.createEditOrDeleteBtn('fas fa-edit pr-4', 'todoList.editBtnOnClick(this)'));
+
+    // delete button
+    flexDiv.appendChild(todoList.createEditOrDeleteBtn('fas fa-times', 'todoList.deleteTask(this)'));
 
     // task description div
-    let taskDescription = document.createElement('div');
-    let taskDescriptionText = document.createTextNode(task.description);
-    taskDescription.appendChild(taskDescriptionText);
-    taskDescription.setAttribute('onclick', 'todoList.taskOnClick(this)');
+    let descriptionDiv = todoList.createSingleElement('div', 'text-justify', task.description);
 
     // div to which task date and time divs are appended
     let div = document.createElement('div');
+    div.appendChild(todoList.dateOrTimeDiv(task.task_time, 'float-right ml-3'));
+    div.appendChild(todoList.dateOrTimeDiv(task.task_date, 'float-right'));
 
     // each element created above is appended to li
-    li.appendChild(checkBox);
-    li.appendChild(deleteBtn);
-    li.appendChild(taskTitle);
-    li.appendChild(taskDescription);
-    todoList.dateOrTimeDiv(task.task_time, 'float-right ml-3', div, li);
-    todoList.dateOrTimeDiv(task.task_date, 'float-right', div, li);
+    li.appendChild(flexDiv);
+    li.appendChild(descriptionDiv);
+    li.appendChild(div);
+
+    // li is appended to ul
     tasksList.appendChild(li);
     }
 },
 
 
-// function to create date or time element
-dateOrTimeDiv: function(taskDateOrTime = '', divClass, div, li) {
-    let taskDate = document.createElement('div');
-    let taskDateText = document.createTextNode(taskDateOrTime);
-    taskDate.className = divClass;
-    taskDate.appendChild(taskDateText);
-    taskDate.setAttribute('onclick', 'todoList.taskOnClick(this)');
+// function to create li
+createLi: function(task) {
+    let li = document.createElement('li');
+    li.id = task.id;
+    li.className = 'list-group-item task-bg';
+    li.setAttribute('onmouseover', 'todoList.addHover(this)');
+    li.setAttribute('onmouseleave', 'todoList.removeHover(this)');
+    return li;
+},
 
-    div.appendChild(taskDate);
-    li.appendChild(div);
+
+// function to create task title or description div
+createSingleElement: function(element, cls, value){
+    let elem = document.createElement(element);
+    elem.className = cls;
+    let text = document.createTextNode(value);
+    elem.appendChild(text);
+    return elem;
+},
+
+
+// function to create checkbox
+createCheckbox: function(task){
+    let checkBox = document.createElement('input');
+    checkBox.setAttribute('type', 'checkbox');
+    if(task.complete){
+        checkBox.setAttribute('checked', 'checked');
+    }
+    checkBox.setAttribute('onchange', 'todoList.onCheck(this)');
+    checkBox.className = 'px-2';
+    return checkBox;
+},
+
+
+
+// function to create edit or delete button
+createEditOrDeleteBtn: function(cls, onclick){
+    let btn = document.createElement('i');
+    btn.className = cls;
+    btn.setAttribute('onclick', onclick);
+    return btn;
+},
+
+
+// function to create date or time element
+dateOrTimeDiv: function(taskDateOrTime = '', divClass) {
+    let taskDateOrTimeDiv = document.createElement('div');
+    let text = document.createTextNode(taskDateOrTime);
+    taskDateOrTimeDiv.className = divClass;
+    taskDateOrTimeDiv.appendChild(text);
+    taskDateOrTimeDiv.setAttribute('onclick', 'todoList.taskOnClick(this)');
+    return taskDateOrTimeDiv;
 },
 
 
@@ -156,15 +186,17 @@ createBtn: function(btnName, id, className, btnHolder, onClick){
 
 
 // function to fill form when task's li is clicked
-taskOnClick: function (_this) {
+editBtnOnClick: function (_this) {
     let taskForm = document.querySelector('#taskForm');
     taskForm.reset();
     document.querySelector('#checkboxHolder').style.display = 'block';
-    document.querySelector('#taskId').value = _this.parentElement.id;
-    document.querySelector('#taskTitle').value = _this.parentElement.children[2].innerText;
-    document.querySelector('#taskDescription').value = _this.parentElement.children[3].innerText;
-    let taskDate = _this.parentElement.children[4].children[1].innerText;
-    let taskTime = _this.parentElement.children[4].children[0].innerText;
+    document.querySelector('#taskId').value = _this.parentElement.parentElement.id;
+    document.querySelector('#taskTitle').value = _this.parentElement.parentElement.children[0].children[1].innerText;
+    document.querySelector('#taskDescription').value = _this.parentElement.parentElement.children[1].innerText;
+
+    let taskTime = _this.parentElement.parentElement.children[2].children[0].innerText;
+    let taskDate = _this.parentElement.parentElement.children[2].children[1].innerText;
+
     if(taskDate !== ''){
         todoList.changeDateFormat(taskDate);
     }
@@ -283,13 +315,13 @@ toggleUpdateButtons: function(taskForm) {
 
 
 // function to update complete status when checkbox is clicked
-handleCheck: function (_this) {
-    let task_id = _this.parentElement.id;
-    let title = _this.parentElement.children[2].innerText;
-    let description = _this.parentElement.children[3].innerText;
-    let checkBoxValue = _this.parentElement.children[0].checked;
-    let task_date = _this.parentElement.children[4].children[1].innerText;
-    let task_time = _this.parentElement.children[4].children[0].innerText;
+onCheck: function (_this) {
+    let task_id = _this.parentElement.parentElement.id;
+    let title = _this.parentElement.parentElement.children[0].children[1].innerText;
+    let description = _this.parentElement.parentElement.children[1].innerText;
+    let checkBoxValue = _this.checked;
+    let task_date = _this.parentElement.parentElement.children[2].children[1].innerText;
+    let task_time = _this.parentElement.parentElement.children[2].children[0].innerText;
     let task = {
         id: task_id,
         title: title,
@@ -326,14 +358,14 @@ cancelUpdate: function () {
 
 // function to delete task
 deleteTask: function(_this){
-    let taskId = _this.parentElement.id;
+    let taskId = _this.parentElement.parentElement.id;
     let httpRequest = new XMLHttpRequest();
     httpRequest.onload = function () {
         let data = JSON.parse(this.response);
         console.log(this.response);
-        _this.parentElement.remove();
+        _this.parentElement.parentElement.remove();
             // if(!data.msg){
-            //     _this.parentElement.remove();
+            //     _this.parentElement.parentElement.remove();
             // }
         if(data.tasks_count === 0){
             let tasksList = document.querySelector('#tasksList');
