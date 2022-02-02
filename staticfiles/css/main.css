@@ -1,5 +1,7 @@
 body {
     background-color: #EFEFEF;
+    position: relative;
+    min-height: 100vh;
 }
 
 .task-bg {
@@ -18,3 +20,8 @@ label {
     font-size: 15px;
 }
 
+#footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+}

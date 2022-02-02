@@ -39,11 +39,11 @@ const todoList = {
         checkBox.setAttribute('checked', 'checked');
     }
     checkBox.setAttribute('onchange', 'todoList.handleCheck(this)');
-    checkBox.className = 'float-left top-margin';
+    checkBox.className = 'float-left mt-3';
 
     // task title div
     let taskTitle = document.createElement('h4');
-    taskTitle.className = 'ml-4';
+    taskTitle.className = 'ml-4 mt-1';
     let taskTitleText = document.createTextNode(task.title);
     taskTitle.appendChild(taskTitleText);
     taskTitle.setAttribute('onclick', 'todoList.taskOnClick(this)');
