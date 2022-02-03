@@ -30,7 +30,7 @@ const todoList = {
     flexDiv.appendChild(todoList.createCheckbox(task));
 
     // task title div
-    flexDiv.appendChild(todoList.createSingleElement('H4', 'px-2 mr-auto', task.title));
+    flexDiv.appendChild(todoList.createSingleElement('p', 'px-2 mr-auto h5', task.title));
 
     // edit button
     flexDiv.appendChild(todoList.createEditOrDeleteBtn('fas fa-edit pr-4', 'todoList.editBtnOnClick(this)'));
@@ -62,8 +62,6 @@ createLi: function(task) {
     let li = document.createElement('li');
     li.id = task.id;
     li.className = 'list-group-item task-bg';
-    li.setAttribute('onmouseover', 'todoList.addHover(this)');
-    li.setAttribute('onmouseleave', 'todoList.removeHover(this)');
     return li;
 },
 
@@ -378,16 +376,6 @@ deleteTask: function(_this){
 },
 
 
-addHover: function(_this){
-    _this.classList.add('bg-dark');
-    _this.classList.add('text-white');
-},
-
-
-removeHover: function(_this){
-    _this.classList.remove('bg-dark');
-    _this.classList.remove('text-white');
-}
 };
 
 
